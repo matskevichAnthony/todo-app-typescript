@@ -28,8 +28,10 @@ const TodoList = ({ todos, setTodos }: Props) => {
 export default TodoList;
 
 const TodosWrapper = styled.div`
+	width: 45%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	gap: 1rem;
 `;
