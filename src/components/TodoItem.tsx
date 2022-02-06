@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { Todo } from '../model';
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
 import { MdDone } from 'react-icons/md';
+import { Draggable } from 'react-beautiful-dnd';
 
 type Props = {
+	index: number;
 	todo: Todo;
 	todos: Todo[];
 	setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
@@ -14,7 +16,7 @@ interface StyledProps {
 	isDone: boolean;
 }
 
-const TodoItem = ({ todo, todos, setTodos }: Props) => {
+const TodoItem = ({ index, todo, todos, setTodos }: Props) => {
 	const [edit, setEdit] = useState<boolean>(false);
 	const [editTodo, setEditTodo] = useState<string>(todo.todo);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +25,7 @@ const TodoItem = ({ todo, todos, setTodos }: Props) => {
 		inputRef.current?.focus();
 	}, [edit]);
 
+	//FIXME: WHEN TODO IS DONE PROBLEM WITH DRAGGING AND BUTTON
 	const handleDone = (id: string) => {
 		setTodos(
 			todos.map((todo) =>
@@ -42,35 +45,44 @@ const TodoItem = ({ todo, todos, setTodos }: Props) => {
 		setEdit(false);
 	};
 
-	console.log('lol');
 	const handleDelete = (id: string) => {
 		setTodos(todos.filter((todo) => todo.id !== id));
 	};
 	console.log(todos);
 	return (
-		<TodoWrapper isDone={todo.isDone} onSubmit={(e) => handleEdit(e, todo.id)}>
-			<TaskWrapper>
-				{edit ? (
-					<StyledInput
-						ref={inputRef}
-						placeholder={editTodo}
-						value={editTodo}
-						onChange={(e) => setEditTodo(e.target.value)}
-					/>
-				) : (
-					todo.todo
-				)}
-			</TaskWrapper>
-			<ButtonsWrapper isDone={todo.isDone}>
-				<AiFillEdit
-					onClick={() => {
-						setEdit(!edit);
-					}}
-				/>
-				<AiFillDelete onClick={() => handleDelete(todo.id)} />
-				<MdDone onClick={() => handleDone(todo.id)} />
-			</ButtonsWrapper>
-		</TodoWrapper>
+		<Draggable draggableId={todo.id} index={index}>
+			{(provided) => (
+				<TodoWrapper
+					isDone={todo.isDone}
+					onSubmit={(e) => handleEdit(e, todo.id)}
+					{...provided.draggableProps}
+					{...provided.dragHandleProps}
+					ref={provided.innerRef}
+				>
+					<TaskWrapper>
+						{edit ? (
+							<StyledInput
+								ref={inputRef}
+								placeholder={editTodo}
+								value={editTodo}
+								onChange={(e) => setEditTodo(e.target.value)}
+							/>
+						) : (
+							todo.todo
+						)}
+					</TaskWrapper>
+					<ButtonsWrapper isDone={todo.isDone}>
+						<AiFillEdit
+							onClick={() => {
+								setEdit(!edit);
+							}}
+						/>
+						<AiFillDelete onClick={() => handleDelete(todo.id)} />
+						<MdDone onClick={() => handleDone(todo.id)} />
+					</ButtonsWrapper>
+				</TodoWrapper>
+			)}
+		</Draggable>
 	);
 };
 
