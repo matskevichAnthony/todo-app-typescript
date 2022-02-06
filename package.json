@@ -12,6 +12,7 @@
     "@types/react-dom": "^17.0.11",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
     "react-scripts": "5.0.0",
     "styled": "^1.0.0",
     "styled-components": "^5.3.3",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.22",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
     "eslint": "^8.8.0",

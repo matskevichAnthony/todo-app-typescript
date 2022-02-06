@@ -4,12 +4,18 @@ import styled from 'styled-components';
 interface Props {
 	todo: string;
 	setTodo: React.Dispatch<React.SetStateAction<string>>;
+	addTodoHandler: (e: React.FormEvent) => void;
 }
 
-const InputField = ({ todo, setTodo }: Props) => {
+const InputField = ({ todo, setTodo, addTodoHandler }: Props) => {
 	return (
-		<AppForm>
-			<AppInput type='input' placeholder='Enter a task' />
+		<AppForm onSubmit={addTodoHandler}>
+			<AppInput
+				type='input'
+				placeholder='Enter a task'
+				value={todo}
+				onChange={(e) => setTodo(e.target.value)}
+			/>
 			<AppSubmit>+</AppSubmit>
 		</AppForm>
 	);
@@ -27,14 +33,10 @@ const AppInput = styled.input`
 	width: 100%;
 	border-radius: 50px;
 	border: none;
-	transition: all 0.3s linear;
+	transition: all 0.5s linear;
 	-webkit-box-shadow: 0px 0px 12px 1px rgba(60, 60, 60, 0.2);
 	-moz-box-shadow: 0px 0px 12px 1px rgba(60, 60, 60, 0.2);
 	box-shadow: 0px 0px 12px 1px rgba(60, 60, 60, 0.2);
-	&:focus {
-		box-shadow: 0 0 10px 10000px rgba(60, 60, 60, 0.2);
-		outline: none;
-	}
 `;
 
 const AppSubmit = styled.button`
